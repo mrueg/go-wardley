@@ -1,0 +1,69 @@
+name: continuous-integration
+
+on:
+  push:
+    branches:
+    - main
+    tags:
+    - '*'
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  ci-go-lint:
+    name: ci-go-lint
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v4
+
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: "go.mod"
+      id: go
+
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v8
+
+  ci-unit-tests:
+    name: ci-unit-tests
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v4
+
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: "go.mod"
+      id: go
+
+    - name: Run unit tests
+      run:  go test ./...
+
+  ci-build-cli:
+    name: ci-build-cli
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v4
+
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: "go.mod"
+      id: go
+
+    - name: Build CLI
+      run:  go build -o owm ./cmd/owm/owm.go
+
+    - name: Run CLI with png
+      run: ./owm --input wardley/assets/map.owm --format png
+
+    - name: Run CLI with svg
+      run: ./owm --input wardley/assets/map.owm --format svg
+
+    - name: Run CLI from stdin
+      run: cat wardley/assets/map.owm | ./owm

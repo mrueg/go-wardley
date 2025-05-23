@@ -1,0 +1,5 @@
+.idea
+
+/owm
+# Added by goreleaser init:
+dist/
