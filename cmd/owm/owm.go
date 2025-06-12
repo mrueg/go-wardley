@@ -23,9 +23,11 @@ func main() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
 	cmd := &cli.Command{
-		Name:    "owm",
-		Usage:   "Render Wardley Maps on the command line",
-		Version: fmt.Sprintf("%s@%s-%s", version, commit, date),
+		Name:                  "owm",
+		Usage:                 "Render Wardley Maps on the command line",
+		Version:               fmt.Sprintf("%s@%s-%s", version, commit, date),
+		EnableShellCompletion: true,
+		HideHelpCommand:       true,
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name:        "port",

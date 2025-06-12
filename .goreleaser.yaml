@@ -31,3 +31,30 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+
+# Publish on Homebrew Tap
+brews:
+- name: owm
+  repository:
+    owner: mrueg
+    name: homebrew-tap
+    branch: main
+
+  commit_author:
+    name: Manuel Rüger
+    email: manuel@rueg.eu
+
+  commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+
+  directory: Formula
+
+  homepage: "https://github.com/mrueg/go-wardley"
+  description: "Library and CLI tool to create Wardley Maps"
+  license: "Apache 2.0"
+
+  install: |
+    bin.install "owm"
+    generate_completions_from_executable(bin/"owm", "completion")
+
+  test: |
+    system "#{bin}/owm", "version"
