@@ -8,7 +8,15 @@ The CLI is called `owm` as `go-wardley` is the library that can be embedded in o
 
 ### Install
 
-Download from [Releases](https://github.com/mrueg/go-wardley/releases) or install via
+
+If you have [Homebrew](https://brew.sh) installed, you can run:
+
+```shell
+brew tap mrueg/homebrew-tap
+brew install owm
+```
+
+Alternatively, you can download the [Release](https://github.com/mrueg/go-wardley/releases) or install via
 
 ```shell
 go install github.com/mrueg/go-wardley/cmd/owm@latest
