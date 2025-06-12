@@ -39,6 +39,7 @@ brews:
     owner: mrueg
     name: homebrew-tap
     branch: main
+    token: "{{ .Env.TAP_GITHUB_TOKEN }}"
 
   commit_author:
     name: Manuel Rüger
