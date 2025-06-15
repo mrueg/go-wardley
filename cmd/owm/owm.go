@@ -72,14 +72,6 @@ func main() {
 				Name:  "log-level",
 				Value: "info",
 				Usage: "Set log level: error, warn, info, debug, trace",
-				Action: func(ctx context.Context, cmd *cli.Command, s string) error {
-					level, err := zerolog.ParseLevel(s)
-					if err != nil {
-						return err
-					}
-					zerolog.SetGlobalLevel(level)
-					return nil
-				},
 			},
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
@@ -99,6 +91,12 @@ func main() {
 }
 
 func Run(cmd *cli.Command) error {
+	level, err := zerolog.ParseLevel(cmd.String("log-level"))
+	if err != nil {
+		return err
+	}
+	zerolog.SetGlobalLevel(level)
+
 	port := strconv.FormatInt(int64(cmd.Int("port")), 10)
 	re, _ := wardley.NewRenderEngine(port)
 	defer re.Cancel()
@@ -106,7 +104,6 @@ func Run(cmd *cli.Command) error {
 	file := cmd.String("input")
 
 	var content, outputContent []byte
-	var err error
 	if file == "" {
 		content, err = io.ReadAll(os.Stdin)
 		if err != nil {
