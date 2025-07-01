@@ -2,4 +2,4 @@
 
 /owm
 # Added by goreleaser init:
-dist/
+/dist/

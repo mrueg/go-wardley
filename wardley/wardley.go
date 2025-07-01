@@ -63,7 +63,8 @@ func NewRenderEngine(port string) (*RenderEngine, error) {
 
 	log.Debug().Msg("HTTP server started")
 
-	actx, _ := chromedp.NewExecAllocator(context.Background(), append(chromedp.DefaultExecAllocatorOptions[:], chromedp.Flag("headless", true), chromedp.WindowSize(1920, 1080))...)
+	actx, _ := chromedp.NewExecAllocator(context.Background(),
+		append(chromedp.DefaultExecAllocatorOptions[:], chromedp.Flag("headless", true), chromedp.WindowSize(1920, 1080))...)
 	ctx, cancel := chromedp.NewContext(actx,
 		chromedp.WithLogf(log.Info().Msgf),
 		chromedp.WithErrorf(log.Error().Msgf),
@@ -98,8 +99,8 @@ func (r *RenderEngine) Render(content string) ([]byte, error) {
 	}
 
 	err := chromedp.Run(r.ctx,
-		chromedp.WaitVisible(`document.querySelector("#htmEditor > textarea")`, chromedp.ByJSPath),
-		chromedp.Nodes(`document.querySelector("#htmEditor > textarea")`, &nodes, chromedp.ByJSPath),
+		chromedp.WaitVisible(`document.querySelector("#map_editor > textarea")`, chromedp.ByJSPath),
+		chromedp.Nodes(`document.querySelector("#map_editor > textarea")`, &nodes, chromedp.ByJSPath),
 		chromedp.Sleep(time.Second),
 	)
 	if err != nil {
@@ -122,7 +123,7 @@ func (r *RenderEngine) Render(content string) ([]byte, error) {
 
 	// Check if syntax errors exist
 	err = chromedp.Run(r.ctx,
-		chromedp.WaitVisible(`document.querySelector("#top-nav-wrapper > div.MuiBox-root.css-i9gxme > header > div > div.MuiStack-root.css-45az3d > button.MuiButtonBase-root.MuiButton-root.MuiButton-outlined.MuiButton-outlinedError.MuiButton-sizeSmall.MuiButton-outlinedSizeSmall.MuiButton-colorError.MuiButton-root.MuiButton-outlined.MuiButton-outlinedError.MuiButton-sizeSmall.MuiButton-outlinedSizeSmall.MuiButton-colorError.css-id02k7")`, chromedp.ByJSPath),
+		chromedp.WaitVisible(`document.querySelector("#top-nav-wrapper > div.MuiBox-root.css-i9gxme > header > div > div.MuiStack-root.css-45az3d > button.MuiButtonBase-root.MuiButton-root.MuiButton-outlined.MuiButton-outlinedError.MuiButton-sizeSmall.MuiButton-outlinedSizeSmall.MuiButton-colorError.MuiButton-root.MuiButton-outlined.MuiButton-outlinedError.MuiButton-sizeSmall.MuiButton-outlinedSizeSmall.MuiButton-colorError.css-q2d4fq")`, chromedp.ByJSPath),
 		chromedp.Nodes(".ace_error", &errorNodes, chromedp.ByQuery, chromedp.AtLeast(0)),
 	)
 	if err != nil {
@@ -136,7 +137,7 @@ func (r *RenderEngine) Render(content string) ([]byte, error) {
 	log.Info().Msg("Syntax checked and correct")
 
 	err = chromedp.Run(r.ctx,
-		chromedp.OuterHTML(`document.querySelector("#map > div.wardley.jss1 > svg")`, &result, chromedp.ByJSPath),
+		chromedp.OuterHTML(`document.querySelector("#map-canvas > div:nth-child(1) > svg")`, &result, chromedp.ByJSPath),
 	)
 	if err != nil {
 		return nil, err
@@ -160,8 +161,8 @@ func (r *RenderEngine) RenderAsScaledPng(content string, scale float64) ([]byte,
 	}
 	log.Debug().Float64("scale", scale).Msg("Screenshotting PNG")
 	err = chromedp.Run(r.ctx,
-		chromedp.ScreenshotScale(`document.querySelector("#map > div.wardley.jss1 > svg")`, scale, &resultInBytes, chromedp.ByJSPath),
-		chromedp.Dimensions(`document.querySelector("#map > div.wardley.jss1 > svg")`, &model, chromedp.ByJSPath),
+		chromedp.ScreenshotScale(`document.querySelector("#map-canvas > div:nth-child(1) > svg")`, scale, &resultInBytes, chromedp.ByJSPath),
+		chromedp.Dimensions(`document.querySelector("#map-canvas > div:nth-child(1) > svg")`, &model, chromedp.ByJSPath),
 	)
 	if err != nil {
 		return nil, nil, err
