@@ -85,7 +85,7 @@ style wardley
 
 ## How it works
 
-[go-wardley]() uses [chromedp][] to execute [OnlineWardleyMaps][] in a headless Chrome browser and is able to capture the SVG from source code and the PNG as a screenshot of the created Wardley Map.
+[go-wardley][] uses [chromedp][] to execute [OnlineWardleyMaps][] in a headless Chrome browser and is able to capture the SVG from source code and the PNG as a screenshot of the created Wardley Map.
 
 
 ## Maintenance 

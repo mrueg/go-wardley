@@ -51,7 +51,7 @@ brews:
 
   homepage: "https://github.com/mrueg/go-wardley"
   description: "Library and CLI tool to create Wardley Maps"
-  license: "Apache 2.0"
+  license: "MIT"
 
   install: |
     bin.install "owm"
